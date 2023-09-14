@@ -14,6 +14,7 @@
             <Setter Property="MinWidth" Value="60" />
             <Setter Property="Margin" Value="8" />
         </Style>
+        <local:DateTimeToLongConverter x:Key="myDateTimeToLongConverter" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -25,7 +26,7 @@
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding LastName}" FontSize="16" />
-                        <TextBlock Text="{Binding Birthday}" FontSize="13" />
+                        <TextBlock Text="{Binding Birthday, Converter={StaticResource myDateTimeToLongConverter}, StringFormat=dd-MM-yyyy}" FontSize="13" />
                         <TextBlock Text="{Binding Sex}" FontSize="13"/>
                     </StackPanel>
                 </DataTemplate>
