@@ -33,7 +33,12 @@ namespace GrpcWpfClient.ViewModels
             requestHeaders.Add("guid", guid);
 
             Workers = GetObservableCollectionWorkers();
+            /*BackgroundWorker = Task.Run(async () =>
+            {
+                await GetWorkerStream();
+            });*/
         }
+        private Task BackgroundWorker {  get; set; }
         private string guid = Guid.NewGuid().ToString(); // guid для индитификации подключения
         private Metadata requestHeaders = new Metadata(); // заголовки для передачи на сервер
         // Команды
@@ -186,6 +191,45 @@ namespace GrpcWpfClient.ViewModels
                 });
             }
             return result;
+        }
+
+        // стрим от сервера
+        public async Task GetWorkerStream()
+        {
+            // посылаем пустое сообщение и получаем набор сообщений
+            var serverData = WorkerServiceClient.GetWorkerStream(new EmptyMessage());
+
+            // получаем поток сервера
+            var responseStream = serverData.ResponseStream;
+
+            await foreach (WorkerAction response in responseStream.ReadAllAsync())
+            {
+                switch (response.ActionType)
+                {
+                    case Crud.Action.CreateAction:
+                        Workers.Add(new Worker
+                        {
+                            Id = response.WorkerMessage.Id,
+                            LastName = response.WorkerMessage.LastName,
+                            Birthday= response.WorkerMessage.Birthday,
+                            Sex= response.WorkerMessage.Sex
+                        });
+                        break;
+                    case Crud.Action.UpdateAction:
+                        Worker workerUpd = Workers.Where(w => w.Id == response.WorkerMessage.Id).First();
+                        workerUpd.LastName = response.WorkerMessage.LastName;
+                        workerUpd.Birthday = response.WorkerMessage.Birthday;
+                        workerUpd.Sex = response.WorkerMessage.Sex;
+                        break;
+                    case Crud.Action.DeleteAction:
+                        Worker workerDel = Workers.Where(w => w.Id == response.WorkerMessage.Id).First();
+                        Workers.Remove(workerDel);
+                        break;
+                    default:
+                        MessageBox.Show("Что-то не то происходит сервер пишет");
+                        break;
+                }
+            }
         }
 
     }

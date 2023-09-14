@@ -11,9 +11,8 @@ namespace GrpcWpfClient
     {
         public MainWindow()
         {
-            InitializeComponent();
-            DataContext = new ApplicationViewModel();
-            mainFrame.Navigate(new StartPage() { DataContext = this.DataContext });
+            InitializeComponent();            
+            mainFrame.Navigate(new StartPage());
         }
     }
 }
