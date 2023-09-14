@@ -122,6 +122,7 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
         // обновляем даннные
         worker.LastName = request.LastName;
         worker.Birthday = request.Birthday;
+        worker.Sex = request.Sex;
         await db.SaveChangesAsync();
         var reply = new WorkerEntiti() 
         { 

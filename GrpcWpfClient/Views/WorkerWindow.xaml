@@ -6,6 +6,7 @@
         xmlns:crud="clr-namespace:Crud;assembly=GrpcClientLibrary"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:models="clr-namespace:GrpcWpfClient.Models"
+        xmlns:local="clr-namespace:GrpcWpfClient.Views"
         d:DataContext="{d:DesignInstance Type=models:Worker}"
         mc:Ignorable="d"
         Title="WorkerWindow" Height="450" Width="300">
@@ -21,6 +22,8 @@
             <Setter Property="Margin" Value="8" />
         </Style>
 
+        <local:DateTimeToLongConverter x:Key="myDateTimeToLongConverter" />
+
         <ObjectDataProvider x:Key="enumDataSource"
             ObjectType="{x:Type sys:Enum}"
             MethodName="GetValues">
@@ -28,7 +31,6 @@
                 <x:Type TypeName="crud:Sex" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -46,7 +48,7 @@
         <TextBlock Text="Пол" Grid.Row="2" />
 
         <TextBox Text="{Binding LastName}" Grid.Column="1" />
-        <TextBox Text="{Binding Birthday}" Grid.Column="1" Grid.Row="1" />
+        <DatePicker SelectedDate="{Binding Birthday, Converter={StaticResource myDateTimeToLongConverter}}" Grid.Column="1" Grid.Row="1"/>
         <ComboBox x:Name="sexBox"
                   Grid.Column="1"
                   Grid.Row="2"

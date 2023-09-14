@@ -18,7 +18,8 @@ namespace GrpcWpfClient.Views
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return DependencyProperty.UnsetValue;
+
+            return ((DateTime)value).Ticks;
         }
     }
 }
