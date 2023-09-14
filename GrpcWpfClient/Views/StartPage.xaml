@@ -15,8 +15,7 @@
             <Setter Property="MinWidth" Value="60" />
             <Setter Property="Margin" Value="8" />
         </Style>
-        <local:DateTimeToLongConverter x:Key="myDateTimeToLongConverter" />          
-        </cm:BackgroundWorker>
+        <local:DateTimeToLongConverter x:Key="myDateTimeToLongConverter" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>

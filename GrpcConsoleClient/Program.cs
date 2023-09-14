@@ -10,7 +10,7 @@ namespace GrpcConsoleClient
         static async Task Main(string[] args)
         {
             string arg;
-            if (args.Length == 0) arg = "https://localhost:7144";
+            if (args.Length == 0) arg = "https://localhost:5001";
             else arg = args[0];
             WorkerService.WorkerServiceClient client;
 

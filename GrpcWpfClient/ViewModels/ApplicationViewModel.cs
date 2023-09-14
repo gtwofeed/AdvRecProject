@@ -20,7 +20,7 @@ namespace GrpcWpfClient.ViewModels
         {
             // создаем канал для обмена сообщениями с сервером
             // параметр - адрес сервера gRPC
-            string connStr = "https://localhost:7144";
+            string connStr = "https://localhost:5001";
 
             // создаем канал для обмена сообщениями с сервером
             // параметр - адрес сервера gRPC
@@ -41,6 +41,7 @@ namespace GrpcWpfClient.ViewModels
         private Task BackgroundWorker {  get; set; }
         private string guid = Guid.NewGuid().ToString(); // guid для индитификации подключения
         private Metadata requestHeaders = new Metadata(); // заголовки для передачи на сервер
+
         // Команды
         private RelayCommand? addCommand;
         private RelayCommand? editCommand;
@@ -50,7 +51,9 @@ namespace GrpcWpfClient.ViewModels
         // клиент gRPC
         private WorkerService.WorkerServiceClient WorkerServiceClient { get; set; }
 
-        // команда добавления
+        /// <summary>
+        /// команда добавления
+        /// </summary>
         public RelayCommand AddCommand
         {
             get
@@ -69,7 +72,9 @@ namespace GrpcWpfClient.ViewModels
                   }));
             }
         }
-        // команда редактирования
+        /// <summary>
+        /// команда редактирования
+        /// </summary>
         public RelayCommand EditCommand
         {
             get
@@ -98,7 +103,9 @@ namespace GrpcWpfClient.ViewModels
                   }));
             }
         }
-        // команда удаления
+        /// <summary>
+        /// команда удаления
+        /// </summary>
         public RelayCommand DeleteCommand
         {
             get
@@ -193,7 +200,10 @@ namespace GrpcWpfClient.ViewModels
             return result;
         }
 
-        // стрим от сервера
+        /// <summary>
+        /// стрим от сервера
+        /// </summary>
+        /// <returns></returns>
         public async Task GetWorkerStream()
         {            
             // посылаем пустое сообщение и получаем набор сообщений
