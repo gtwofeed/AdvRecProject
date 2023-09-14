@@ -12,12 +12,10 @@ namespace GrpcWpfClient.Views
     /// </summary>
     public partial class StartPage : Page
     {
-        private BackgroundWorker backgroundWorker;
         public StartPage()
         {
             InitializeComponent();
             DataContext = new ApplicationViewModel();
-            backgroundWorker = ((BackgroundWorker)this.FindResource("backgroundWorker"));
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
