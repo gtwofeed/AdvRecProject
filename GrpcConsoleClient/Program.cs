@@ -25,6 +25,7 @@ namespace GrpcConsoleClient
             // добавляем один заголовок
             Guid guid = Guid.NewGuid();
             requestHeaders.Add("guid", guid.ToString());
+            Console.WriteLine(guid);
 
             try
             {

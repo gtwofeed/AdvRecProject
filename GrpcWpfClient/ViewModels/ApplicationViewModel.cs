@@ -10,6 +10,7 @@ using GrpcWpfClient.Views;
 using Crud;
 using Grpc.Core;
 using System.Windows;
+using System.Threading;
 
 namespace GrpcWpfClient.ViewModels
 {
@@ -31,6 +32,7 @@ namespace GrpcWpfClient.ViewModels
 
             // добавляем один заголовок
             requestHeaders.Add("guid", guid);
+            MessageBox.Show(guid);
 
             Workers = GetObservableCollectionWorkers();
             /*BackgroundWorker = Task.Run(async () =>
@@ -202,8 +204,9 @@ namespace GrpcWpfClient.ViewModels
             // получаем поток сервера
             var responseStream = serverData.ResponseStream;
 
-            await foreach (WorkerAction response in responseStream.ReadAllAsync())
+            while (await responseStream.MoveNext(new CancellationToken()))
             {
+                WorkerAction response = responseStream.Current;
                 switch (response.ActionType)
                 {
                     case Crud.Action.CreateAction:

@@ -1,5 +1,6 @@
 ﻿using GrpcWpfClient.ViewModels;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace GrpcWpfClient.Views
@@ -16,9 +17,12 @@ namespace GrpcWpfClient.Views
             
         }
 
-        private async void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            await ((ApplicationViewModel)DataContext).GetWorkerStream();
+            Task.Run(async () =>
+            {
+                await ((ApplicationViewModel)this.DataContext).GetWorkerStream();
+            });
         }
     }
 }
