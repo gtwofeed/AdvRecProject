@@ -1,0 +1,64 @@
+﻿<Window x:Class="GrpcWpfClient.Views.WorkerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:crud="clr-namespace:Crud;assembly=GrpcClientLibrary"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:models="clr-namespace:GrpcWpfClient.Models"
+        d:DataContext="{d:DesignInstance Type=models:Worker}"
+        mc:Ignorable="d"
+        Title="WorkerWindow" Height="450" Width="300">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="8" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="8" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="MinWidth" Value="60" />
+            <Setter Property="Margin" Value="8" />
+        </Style>
+
+        <ObjectDataProvider x:Key="enumDataSource"
+            ObjectType="{x:Type sys:Enum}"
+            MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="crud:Sex" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Имя" />
+        <TextBlock Text="День рожденья" Grid.Row="1" />
+        <TextBlock Text="Пол" Grid.Row="2" />
+
+        <TextBox Text="{Binding LastName}" Grid.Column="1" />
+        <TextBox Text="{Binding Birthday}" Grid.Column="1" Grid.Row="1" />
+        <ComboBox x:Name="sexBox"
+                  Grid.Column="1"
+                  Grid.Row="2"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  MinWidth="150"
+                  ItemsSource="{Binding Source={StaticResource enumDataSource}}"
+                  SelectedItem="{Binding Sex}"/>
+
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2">
+            <Button IsDefault="True" Click="Accept_Click" >OK</Button>
+            <Button IsCancel="True" >Отмена</Button>
+        </StackPanel>
+    </Grid>
+</Window>

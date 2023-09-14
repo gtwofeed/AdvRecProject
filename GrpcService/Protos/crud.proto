@@ -1,0 +1,53 @@
+syntax = "proto3";
+ 
+package crud;
+ 
+import "google/protobuf/empty.proto";
+ 
+service WorkerService
+{
+	rpc GetWorkerStream (EmptyMessage) returns (stream WorkerAction);
+	rpc ListWorkers(google.protobuf.Empty) returns (ListReply);
+	rpc GetWorker(WorkerId) returns (WorkerEntiti);
+	rpc CreateWorker(CreateWorkerRequest) returns (WorkerEntiti);
+	rpc UpdateWorker(WorkerEntiti) returns (WorkerEntiti);
+	rpc DeleteWorker(WorkerId) returns (WorkerEntiti);
+}
+ 
+message EmptyMessage{} 
+message WorkerId{ int32 id = 1;}
+message CreateWorkerRequest
+{
+  string LastName = 1;
+  int64 Birthday = 2;
+  Sex Sex = 3;
+}
+
+message WorkerEntiti
+{
+	int32 id = 1;
+	string LastName = 2;
+	int64 Birthday = 3;
+	Sex Sex = 4;
+}
+message WorkerAction
+{
+	WorkerEntiti WorkerMessage = 1;
+	Action actionType = 2;
+}
+ 
+message ListReply{ repeated WorkerEntiti Workers = 1;}
+
+enum Sex 
+{
+	Default = 0;
+	Male = 1;
+	Female = 2;
+}
+
+enum Action 
+{
+	CreateAction = 0;
+	UpdateAction = 1;
+	DeleteAction = 2;
+}
