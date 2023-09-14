@@ -15,11 +15,11 @@ namespace GrpcWpfClient.Views
         public StartPage()
         {
             InitializeComponent();
-            DataContext = new ApplicationViewModel();
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            DataContext = new ApplicationViewModel();
             await ((ApplicationViewModel)this.DataContext).GetWorkerStream();
         }
     }
