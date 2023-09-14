@@ -37,9 +37,6 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
     public override async Task<ListReply> ListWorkers(Empty request, ServerCallContext context)
     {
         var userGuid = context.RequestHeaders.GetValue("guid");
-        Console.WriteLine("----------------------------------");
-        Console.WriteLine(userGuid);
-        Console.WriteLine("----------------------------------");
         PoolQueuesWorkerActions.Add(userGuid, new Queue<WorkerAction>());
         var listReply = new ListReply();    // определяем список
                                             // преобразуем каждый объект Worker в объект WorkerReply
@@ -190,10 +187,6 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
     public override async Task GetWorkerStream(EmptyMessage request, IServerStreamWriter<WorkerAction> responseStream, ServerCallContext context)
     {
         var userGuid = context.RequestHeaders.GetValue("guid");
-
-        Console.WriteLine("----------------------------------");
-        Console.WriteLine(userGuid);
-        Console.WriteLine("----------------------------------");
         // добовляем слушателя в пулл раздачи
         while (this.Valide)
         {

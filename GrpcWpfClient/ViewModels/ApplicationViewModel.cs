@@ -21,7 +21,6 @@ namespace GrpcWpfClient.ViewModels
             // создаем канал для обмена сообщениями с сервером
             // параметр - адрес сервера gRPC
             string connStr = "https://localhost:7144";
-            WorkerService.WorkerServiceClient client;
 
             // создаем канал для обмена сообщениями с сервером
             // параметр - адрес сервера gRPC
@@ -32,7 +31,6 @@ namespace GrpcWpfClient.ViewModels
 
             // добавляем один заголовок
             requestHeaders.Add("guid", guid);
-            MessageBox.Show(guid);
 
             Workers = GetObservableCollectionWorkers();
             /*BackgroundWorker = Task.Run(async () =>
@@ -197,9 +195,9 @@ namespace GrpcWpfClient.ViewModels
 
         // стрим от сервера
         public async Task GetWorkerStream()
-        {
+        {            
             // посылаем пустое сообщение и получаем набор сообщений
-            var serverData = WorkerServiceClient.GetWorkerStream(new EmptyMessage());
+            var serverData = WorkerServiceClient.GetWorkerStream(new EmptyMessage(), requestHeaders);
 
             // получаем поток сервера
             var responseStream = serverData.ResponseStream;

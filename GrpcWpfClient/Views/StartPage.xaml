@@ -17,7 +17,8 @@
             <Setter Property="Margin" Value="8" />
         </Style>
         <local:DateTimeToLongConverter x:Key="myDateTimeToLongConverter" />
-        <cm:BackgroundWorker x:Key="backgroundWorker" ></cm:BackgroundWorker>
+        <cm:BackgroundWorker x:Key="backgroundWorker"  >            
+        </cm:BackgroundWorker>
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
