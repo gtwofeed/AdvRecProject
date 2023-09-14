@@ -14,9 +14,9 @@ public class ApplicationContext : DbContext
     {
         modelBuilder.HasPostgresEnum<Sex>();
         modelBuilder.Entity<Worker>().HasData(
-                new Worker { Id = 1, LastName = "Tom", Birthday = 37, Sex = Sex.Male },
-                new Worker { Id = 2, LastName = "Sara", Birthday = 40, Sex = Sex.Female },
-                new Worker { Id = 4, LastName = "Styil", Birthday = 1000 }
+                new Worker { Id = 1, LastName = "Tom", FirstName = "Soyer", MiddleName = "Tomi", Birthday = 631255680000000000, Sex = Sex.Male, HasChildren = true },
+                new Worker { Id = 2, LastName = "Kety", FirstName = "Soyer", MiddleName = "Trunk", Birthday = 631355680000000000, Sex = Sex.Female, HasChildren = true },
+                new Worker { Id = 3, LastName = "TN", FirstName = "Soydfer", MiddleName = "Tofdmi", Birthday = 63125568000000, HasChildren = false  }
         );
     }
 }

@@ -44,8 +44,12 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
         { 
             Id = item.Id,
             LastName = item.LastName,
+            FirstName = item.FirstName,
+            MiddleName = item.MiddleName,
             Birthday = item.Birthday,
-            Sex = item.Sex }).ToList();
+            Sex = item.Sex,
+            HaveChildren = item.HasChildren,
+        }).ToList();
         listReply.Workers.AddRange(workerList);
         return await Task.FromResult(listReply);
     }
@@ -69,9 +73,12 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
         WorkerEntiti workerReply = new WorkerEntiti
         { 
             Id = worker.Id,
+            FirstName= worker.FirstName,
+            MiddleName= worker.MiddleName,
             LastName = worker.LastName,
             Birthday = worker.Birthday,
-            Sex = worker.Sex
+            Sex = worker.Sex, 
+            HaveChildren = worker.HasChildren,
         };
         return await Task.FromResult(workerReply);
     }
@@ -89,17 +96,23 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
         var worker = new Worker 
         { 
             LastName = request.LastName,
+            FirstName = request.FirstName,
+            MiddleName = request.MiddleName,
             Birthday = request.Birthday,
             Sex = request.Sex,
+            HasChildren = request.HaveChildren,
         };
         await db.Workers.AddAsync(worker);
         await db.SaveChangesAsync();
         var reply = new WorkerEntiti() 
         { 
             Id = worker.Id,
+            FirstName = worker.FirstName,
+            MiddleName = worker.MiddleName,
             LastName = worker.LastName,
             Birthday = worker.Birthday,
             Sex = worker.Sex,
+            HaveChildren = worker.HasChildren,
         };
         await UpdatePoll(new WorkerAction
         {
@@ -126,15 +139,21 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
         }
         // обновляем даннные
         worker.LastName = request.LastName;
+        worker.FirstName = request.FirstName;
+        worker.MiddleName = request.MiddleName;
         worker.Birthday = request.Birthday;
         worker.Sex = request.Sex;
+        worker.HasChildren = request.HaveChildren;
         await db.SaveChangesAsync();
         var reply = new WorkerEntiti() 
         { 
             Id = worker.Id,
             LastName = worker.LastName,
+            FirstName = worker.FirstName,
+            MiddleName = worker.MiddleName,
             Birthday = worker.Birthday,
             Sex = worker.Sex,
+            HaveChildren = worker.HasChildren,
         };
         await UpdatePoll(new WorkerAction
         {
@@ -195,7 +214,9 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
                 WorkerAction workerAction = PoolQueuesWorkerActions[userGuid].Dequeue();
                 await responseStream.WriteAsync(workerAction);
             }
-            await Task.Delay(TimeSpan.FromSeconds(2));
+
+            // задержка по времени проверки
+            // await Task.Delay(1000);
         }
     }
 

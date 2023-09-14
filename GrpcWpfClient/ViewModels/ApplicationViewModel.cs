@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using GrpcWpfClient.Models;
 using Grpc.Net.Client;
 using GrpcWpfClient.Views;
-using Crud;
 using Grpc.Core;
 using System.Windows;
 using System.Threading;
+using Crud;
 
 namespace GrpcWpfClient.ViewModels
 {
@@ -33,12 +31,8 @@ namespace GrpcWpfClient.ViewModels
             requestHeaders.Add("guid", guid);
 
             Workers = GetObservableCollectionWorkers();
-            /*BackgroundWorker = Task.Run(async () =>
-            {
-                await GetWorkerStream();
-            });*/
         }
-        private Task BackgroundWorker {  get; set; }
+
         private string guid = Guid.NewGuid().ToString(); // guid для индитификации подключения
         private Metadata requestHeaders = new Metadata(); // заголовки для передачи на сервер
 
@@ -90,8 +84,11 @@ namespace GrpcWpfClient.ViewModels
                       {
                           Id = worker.Id,
                           LastName = worker.LastName,
+                          FirstName = worker.FirstName,
+                          MiddleName = worker.MiddleName,
                           Birthday = worker.Birthday,
-                          Sex = worker.Sex
+                          Sex = worker.Sex,
+                          HasChildren = worker.HasChildren,                          
                       };
 
                       WorkerWindow workerWindow = new WorkerWindow(vm);
@@ -133,8 +130,11 @@ namespace GrpcWpfClient.ViewModels
                 {
                     Id = worker.Id,
                     LastName = worker.LastName,
+                    FirstName = worker.FirstName,
+                    MiddleName = worker.MiddleName,
                     Birthday = worker.Birthday,
-                    Sex = worker.Sex
+                    Sex = worker.Sex,
+                    HaveChildren = worker.HasChildren,                    
                 }, requestHeaders);
             }
             catch (RpcException ex)
@@ -151,16 +151,22 @@ namespace GrpcWpfClient.ViewModels
                 WorkerEntiti addWorkerReply = await WorkerServiceClient.CreateWorkerAsync(new CreateWorkerRequest
                 {
                     LastName = worker.LastName,
+                    FirstName = worker.FirstName,
+                    MiddleName = worker.MiddleName,
                     Birthday = worker.Birthday,
-                    Sex = worker.Sex
+                    Sex = worker.Sex,
+                    HaveChildren= worker.HasChildren,
                 }, requestHeaders);
 
                 Workers.Add(new Worker
                 {
                     Id = addWorkerReply.Id,
                     LastName= addWorkerReply.LastName,
+                    FirstName= addWorkerReply.FirstName,
+                    MiddleName= addWorkerReply.MiddleName,
                     Birthday = addWorkerReply.Birthday,
-                    Sex = addWorkerReply.Sex
+                    Sex = addWorkerReply.Sex,
+                    HasChildren = addWorkerReply.HaveChildren,
                 });
             }
             catch(RpcException ex)
@@ -193,8 +199,11 @@ namespace GrpcWpfClient.ViewModels
                 {
                     Id = worker.Id,
                     LastName = worker.LastName,
+                    FirstName = worker.FirstName,
+                    MiddleName = worker.MiddleName,
                     Birthday = worker.Birthday,
-                    Sex = worker.Sex
+                    Sex = worker.Sex,
+                    HasChildren = worker.HaveChildren,
                 });
             }
             return result;
@@ -222,15 +231,21 @@ namespace GrpcWpfClient.ViewModels
                         {
                             Id = response.WorkerMessage.Id,
                             LastName = response.WorkerMessage.LastName,
+                            FirstName = response.WorkerMessage.FirstName,
+                            MiddleName = response.WorkerMessage.MiddleName,
                             Birthday= response.WorkerMessage.Birthday,
-                            Sex= response.WorkerMessage.Sex
+                            Sex= response.WorkerMessage.Sex,
+                            HasChildren= response.WorkerMessage.HaveChildren,
                         });
                         break;
                     case Crud.Action.UpdateAction:
                         Worker workerUpd = Workers.Where(w => w.Id == response.WorkerMessage.Id).First();
                         workerUpd.LastName = response.WorkerMessage.LastName;
+                        workerUpd.FirstName = response.WorkerMessage.FirstName;
+                        workerUpd.MiddleName = response.WorkerMessage.MiddleName;
                         workerUpd.Birthday = response.WorkerMessage.Birthday;
                         workerUpd.Sex = response.WorkerMessage.Sex;
+                        workerUpd.HasChildren = response.WorkerMessage.HaveChildren;
                         break;
                     case Crud.Action.DeleteAction:
                         Worker workerDel = Workers.Where(w => w.Id == response.WorkerMessage.Id).First();

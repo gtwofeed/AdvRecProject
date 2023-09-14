@@ -7,8 +7,11 @@ namespace GrpcWpfClient.Models
     public class Worker : INotifyPropertyChanged
     {
         private string lastName;
+        private string firstName;
+        private string middleName;
         private long birthday;
         private Sex sex = Sex.Default;
+        private bool haveChildren;
         public int Id { get; set; }
         public string LastName
         {
@@ -17,6 +20,24 @@ namespace GrpcWpfClient.Models
             {
                 lastName = value;
                 OnPropertyChanged("LastName");
+            }
+        }
+        public string FirstName
+        {
+            get => firstName;
+            set
+            {
+                firstName = value;
+                OnPropertyChanged("FirstName");
+            }
+        }
+        public string MiddleName
+        {
+            get => middleName;
+            set
+            {
+                middleName = value;
+                OnPropertyChanged("MiddleName");
             }
         }
         public long Birthday
@@ -35,6 +56,15 @@ namespace GrpcWpfClient.Models
             {
                 sex = value;
                 OnPropertyChanged("Sex");
+            }
+        }
+        public bool HasChildren
+        {
+            get => haveChildren;
+            set
+            {
+                haveChildren = value;
+                OnPropertyChanged("HasChildren");
             }
         }
 

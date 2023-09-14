@@ -18,18 +18,25 @@ message EmptyMessage{}
 message WorkerId{ int32 id = 1;}
 message CreateWorkerRequest
 {
-  string LastName = 1;
-  int64 Birthday = 2;
-  Sex Sex = 3;
+	string LastName = 1;
+	string FirstName = 2;
+	string MiddleName = 3;
+	int64 Birthday = 4;
+	Sex Sex = 5;
+	bool HaveChildren = 6;
 }
 
 message WorkerEntiti
 {
 	int32 id = 1;
 	string LastName = 2;
-	int64 Birthday = 3;
-	Sex Sex = 4;
+	string FirstName = 3;
+	string MiddleName = 4;
+	int64 Birthday = 5;
+	Sex Sex = 6;
+	bool HaveChildren = 7;
 }
+
 message WorkerAction
 {
 	WorkerEntiti WorkerMessage = 1;
