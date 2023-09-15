@@ -123,9 +123,13 @@ namespace GrpcWpfClient.ViewModels
         {
             try
             {
+                worker.Id = workerWindow.Worker.Id;
+                worker.FirstName = workerWindow.Worker.FirstName;
+                worker.MiddleName = workerWindow.Worker.MiddleName;
                 worker.LastName = workerWindow.Worker.LastName;
                 worker.Birthday = workerWindow.Worker.Birthday;
                 worker.Sex = workerWindow.Worker.Sex;
+                worker.HasChildren = workerWindow.Worker.HasChildren;
                 WorkerEntiti updateWorkerReply = await WorkerServiceClient.UpdateWorkerAsync(new WorkerEntiti
                 {
                     Id = worker.Id,

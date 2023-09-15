@@ -38,29 +38,43 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Имя" />
-        <TextBlock Text="День рожденья" Grid.Row="1" />
-        <TextBlock Text="Пол" Grid.Row="2" />
-
-        <TextBox Text="{Binding LastName}" Grid.Column="1" />
-        <DatePicker SelectedDate="{Binding Birthday, Converter={StaticResource myDateTimeToLongConverter}}" Grid.Column="1" Grid.Row="1"/>
+        <TextBlock Text="Фамилия" />
+        <TextBlock Text="Имя" Grid.Row="1" />
+        <TextBlock Text="Отчество" Grid.Row="2"/>
+        <TextBlock Text="День рожденья" Grid.Row="3" />
+        <TextBlock Text="Пол" Grid.Row="4" />
+        <TextBlock Text="Дети" Grid.Row="5" />
+        <TextBox Text="{Binding LastName}"
+                 Grid.Column="1" />
+        <TextBox Text="{Binding FirstName}"
+                 Grid.Column="1" Grid.Row="1" />
+        <TextBox Text="{Binding MiddleName}"
+                 Grid.Column="1" Grid.Row="2" />
+        <DatePicker SelectedDate="{Binding Birthday, Converter={StaticResource myDateTimeToLongConverter}}"
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
         <ComboBox x:Name="sexBox"
                   Grid.Column="1"
-                  Grid.Row="2"
+                  Grid.Row="4"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   MinWidth="150"
                   ItemsSource="{Binding Source={StaticResource enumDataSource}}"
                   SelectedItem="{Binding Sex}"/>
 
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2">
-            <Button IsDefault="True" Click="Accept_Click" >OK</Button>
-            <Button IsCancel="True" >Отмена</Button>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="6" Grid.ColumnSpan="2">
+            <Button IsDefault="True" Click="Accept_Click" Margin="15" >OK</Button>
+            <Button IsCancel="True" Margin="15" >Отмена</Button>
         </StackPanel>
     </Grid>
 </Window>
