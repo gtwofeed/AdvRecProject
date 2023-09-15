@@ -46,12 +46,18 @@
             <ColumnDefinition Width="120" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Фамилия" />
-        <TextBlock Text="Имя" Grid.Row="1" />
-        <TextBlock Text="Отчество" Grid.Row="2"/>
-        <TextBlock Text="День рожденья" Grid.Row="3" />
-        <TextBlock Text="Пол" Grid.Row="4" />
-        <TextBlock Text="Дети" Grid.Row="5" />
+        <TextBlock Text="Фамилия" 
+                   VerticalAlignment="Center"/>
+        <TextBlock Text="Имя" Grid.Row="1" 
+                   VerticalAlignment="Center"/>
+        <TextBlock Text="Отчество" Grid.Row="2"
+                   VerticalAlignment="Center"/>
+        <TextBlock Text="День рожденья" Grid.Row="3"
+                   VerticalAlignment="Center"/>
+        <TextBlock Text="Пол" Grid.Row="4"
+                   VerticalAlignment="Center" />
+        <TextBlock Text="Дети" Grid.Row="5"
+                   VerticalAlignment="Center" />
         <TextBox Text="{Binding LastName}"
                  Grid.Column="1" />
         <TextBox Text="{Binding FirstName}"
@@ -71,6 +77,9 @@
                   MinWidth="150"
                   ItemsSource="{Binding Source={StaticResource enumDataSource}}"
                   SelectedItem="{Binding Sex}"/>
+        <CheckBox x:Name="checkHasChildren" IsChecked="{Binding HasChildren}" Height="20"
+                  Grid.Column="1" Grid.Row="5"
+                  HorizontalAlignment="Center"/>
 
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="6" Grid.ColumnSpan="2">
             <Button IsDefault="True" Click="Accept_Click" Margin="15" >OK</Button>
