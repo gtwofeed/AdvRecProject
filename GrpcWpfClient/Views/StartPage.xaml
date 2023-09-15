@@ -16,6 +16,7 @@
             <Setter Property="Margin" Value="8" />
         </Style>
         <local:DateTimeToLongConverter x:Key="myDateTimeToLongConverter" />
+        <local:BoollToStringFoStartPageConverter x:Key="boollToStringFoStartPageConverter" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -39,7 +40,14 @@
                         </WrapPanel>
                         <TextBlock Text="{Binding Birthday, Converter={StaticResource myDateTimeToLongConverter}, StringFormat=dd-MM-yyyy}"
                                    FontSize="13" Margin="5" />
-                        <TextBlock Text="{Binding Sex}" FontSize="13" Margin="5" />
+                        <WrapPanel>
+                            <TextBlock Text="{Binding Sex}" 
+                                       HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                                       Margin="5,0,0,0" />
+                            <TextBlock Text="{Binding HasChildren, Converter={StaticResource boollToStringFoStartPageConverter}}" 
+                                       HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                       Margin="5,0,0,0" />
+                        </WrapPanel>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
