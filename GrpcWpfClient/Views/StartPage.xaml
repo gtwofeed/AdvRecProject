@@ -26,9 +26,16 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock Text="{Binding LastName}" FontSize="16" />
-                        <TextBlock Text="{Binding Birthday, Converter={StaticResource myDateTimeToLongConverter}, StringFormat=dd-MM-yyyy}" FontSize="13" />
-                        <TextBlock Text="{Binding Sex}" FontSize="13"/>
+                        <WrapPanel>
+                            <TextBlock Text="{Binding FirstName}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5" />
+                            <TextBlock Text="{Binding LastName}" FontSize="14" 
+                                       HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5"/>
+                            <TextBlock Text="{Binding MiddleName}" FontSize="14"
+                                       HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5"/>
+                        </WrapPanel>
+                        <TextBlock Text="{Binding Birthday, Converter={StaticResource myDateTimeToLongConverter}, StringFormat=dd-MM-yyyy}"
+                                   FontSize="13" Margin="5" />
+                        <TextBlock Text="{Binding Sex}" FontSize="13" Margin="5" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
