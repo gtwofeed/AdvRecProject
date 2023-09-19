@@ -211,7 +211,6 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
 
         deadline = context.Deadline;
         // ожидание завершения стрима от клиента или истечение времени токена
-        await Console.Out.WriteLineAsync($"----------------------------------\n{(deadline - DateTime.Now).ToString()}\n-----------------------------------------");
         while (!context.CancellationToken.IsCancellationRequested)
         {
             await Task.Delay(deadline - DateTime.Now, context.CancellationToken);
