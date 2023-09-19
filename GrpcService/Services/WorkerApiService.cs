@@ -3,13 +3,13 @@ using Grpc.Core;
 using GrpcService.Models;
 using Crud;  // пространство имен сервиса WorkerService.WorkerServiceBase
 using Google.Protobuf;
+using System.Collections.Generic;
 
 namespace CrudGrpcApp.Services;
 public class WorkerApiService : WorkerService.WorkerServiceBase
 {
     private ApplicationContext db;
-    private static Dictionary<string, Queue<WorkerAction>> PoolQueuesWorkerActions = new();
-    private ServerCallContext serverCallContext;
+    private static Dictionary<string, IServerStreamWriter<WorkerAction>> pooWorkerActions = new();
     private bool Valide { get; set; } = true;
     public WorkerApiService(ApplicationContext db)    
     {
@@ -20,11 +20,12 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
     /// заполнение очередей на отправку
     /// </summary>
     /// <param name="workerAction"></param>
-    private async Task UpdatePoll(WorkerAction workerAction, string guid)
+    private async Task UpdatePoll(WorkerAction workerAction, ServerCallContext context)
     {
-        foreach (var action in PoolQueuesWorkerActions)
+        foreach (var responseStream in pooWorkerActions)
         {
-            if (action.Key != guid) action.Value.Enqueue(workerAction);
+            var userGuid = context.RequestHeaders.GetValue("guid");
+            if (responseStream.Key != userGuid) await responseStream.Value.WriteAsync(workerAction);
         }
     }
 
@@ -36,10 +37,9 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
     /// <returns></returns>
     public override async Task<ListReply> ListWorkers(Empty request, ServerCallContext context)
     {
-        var userGuid = context.RequestHeaders.GetValue("guid");
-        PoolQueuesWorkerActions.Add(userGuid, new Queue<WorkerAction>());
         var listReply = new ListReply();    // определяем список
-                                            // преобразуем каждый объект Worker в объект WorkerReply
+
+        // преобразуем каждый объект Worker в объект WorkerReply
         var workerList = db.Workers.Select(item => new WorkerEntiti 
         { 
             Id = item.Id,
@@ -91,7 +91,6 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
     /// <returns></returns>
     public override async Task<WorkerEntiti> CreateWorker(CreateWorkerRequest request, ServerCallContext context)
     {
-        var userGuid = context.RequestHeaders.GetValue("guid");
         // формируем из данных объект Worker и добавляем его в список workers
         var worker = new Worker 
         { 
@@ -118,7 +117,7 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
         {
             ActionType = Crud.Action.CreateAction,
             WorkerMessage = reply
-        }, userGuid);
+        }, context);
         return await Task.FromResult(reply);
     }
 
@@ -159,7 +158,7 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
         {
             ActionType = Crud.Action.UpdateAction,
             WorkerMessage = reply
-        }, userGuid);
+        }, context);
         return await Task.FromResult(reply);
     }
 
@@ -192,7 +191,7 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
         {
             ActionType = Crud.Action.DeleteAction,
             WorkerMessage = reply
-        }, userGuid);
+        }, context);
         return await Task.FromResult(reply);
     }
 
@@ -205,19 +204,19 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
     /// <returns></returns>
     public override async Task GetWorkerStream(EmptyMessage request, IServerStreamWriter<WorkerAction> responseStream, ServerCallContext context)
     {
+        // добовляем конкретный стрим в список стримов для брудкаста
         var userGuid = context.RequestHeaders.GetValue("guid");
-        // добовляем слушателя в пулл раздачи
-        while (this.Valide)
-        {
-            while (PoolQueuesWorkerActions[userGuid].Count > 0)
-            {
-                WorkerAction workerAction = PoolQueuesWorkerActions[userGuid].Dequeue();
-                await responseStream.WriteAsync(workerAction);
-            }
+        pooWorkerActions.Add(userGuid, responseStream);
 
-            // задержка по времени проверки
-            // await Task.Delay(1000);
+        // ожидание завершения стрима от клиента или истечение времени токена
+        while (!context.CancellationToken.IsCancellationRequested)
+        {
+
+            await Task.Delay(context.Deadline - DateTime.Now, context.CancellationToken);
         }
+
+        // удаляем стрим из коллекции
+        pooWorkerActions.Remove(userGuid);       
     }
 
 }
