@@ -10,6 +10,7 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
 {
     private ApplicationContext db;
     private static Dictionary<string, IServerStreamWriter<WorkerAction>> pooWorkerActions = new();
+    private DateTime deadline;
     private bool Valide { get; set; } = true;
     public WorkerApiService(ApplicationContext db)    
     {
@@ -208,11 +209,12 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
         var userGuid = context.RequestHeaders.GetValue("guid");
         pooWorkerActions.Add(userGuid, responseStream);
 
+        deadline = context.Deadline;
         // ожидание завершения стрима от клиента или истечение времени токена
+        await Console.Out.WriteLineAsync($"----------------------------------\n{(deadline - DateTime.Now).ToString()}\n-----------------------------------------");
         while (!context.CancellationToken.IsCancellationRequested)
         {
-
-            await Task.Delay(context.Deadline - DateTime.Now, context.CancellationToken);
+            await Task.Delay(deadline - DateTime.Now, context.CancellationToken);
         }
 
         // удаляем стрим из коллекции

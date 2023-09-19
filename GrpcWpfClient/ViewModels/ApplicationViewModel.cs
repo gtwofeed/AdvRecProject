@@ -29,12 +29,14 @@ namespace GrpcWpfClient.ViewModels
 
             // добавляем один заголовок
             requestHeaders.Add("guid", guid);
+            deadline = new DateTime(DateTime.Now.AddDays(1).Ticks, DateTimeKind.Utc);
 
             Workers = GetObservableCollectionWorkers();
         }
 
         private string guid = Guid.NewGuid().ToString(); // guid для индитификации подключения
         private Metadata requestHeaders = new Metadata(); // заголовки для передачи на сервер
+        private DateTime deadline; // время жизни потока
 
         // Команды
         private RelayCommand? addCommand;
@@ -44,6 +46,7 @@ namespace GrpcWpfClient.ViewModels
 
         // клиент gRPC
         private WorkerService.WorkerServiceClient WorkerServiceClient { get; set; }
+
 
         /// <summary>
         /// команда добавления
@@ -218,9 +221,10 @@ namespace GrpcWpfClient.ViewModels
         /// </summary>
         /// <returns></returns>
         public async Task GetWorkerStream()
-        {            
+        {           
+
             // посылаем пустое сообщение и получаем набор сообщений
-            var serverData = WorkerServiceClient.GetWorkerStream(new EmptyMessage(), requestHeaders);
+            var serverData = WorkerServiceClient.GetWorkerStream(new EmptyMessage(), requestHeaders, deadline);
 
             // получаем поток сервера
             var responseStream = serverData.ResponseStream;
