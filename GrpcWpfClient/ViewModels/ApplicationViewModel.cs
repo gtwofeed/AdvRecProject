@@ -229,7 +229,6 @@ namespace GrpcWpfClient.ViewModels
 
             // получаем поток сервера
             var responseStream = serverData.ResponseStream;
-
             while (await responseStream.MoveNext(new CancellationToken()))
             {
                 WorkerAction response = responseStream.Current;

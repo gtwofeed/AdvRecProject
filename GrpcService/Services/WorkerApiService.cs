@@ -208,16 +208,18 @@ public class WorkerApiService : WorkerService.WorkerServiceBase
         // добовляем конкретный стрим в список стримов для брудкаста
         var userGuid = context.RequestHeaders.GetValue("guid");
         pooWorkerActions.Add(userGuid, responseStream);
-
         deadline = context.Deadline;
+
         // ожидание завершения стрима от клиента или истечение времени токена
         while (!context.CancellationToken.IsCancellationRequested)
         {
-            await Task.Delay(deadline - DateTime.Now, context.CancellationToken);
+            await Task.Delay(3000);
         }
 
         // удаляем стрим из коллекции
-        pooWorkerActions.Remove(userGuid);       
+        pooWorkerActions.Remove(userGuid);
+        
     }
+
 
 }
