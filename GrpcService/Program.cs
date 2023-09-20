@@ -10,7 +10,7 @@ namespace GrpcService
             var builder = WebApplication.CreateBuilder(args);
 
             // строка подключения
-            string connStr = "Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=yfrfpe.obq";
+            string connStr = builder.Configuration["connStr"];
             // добавляем контекст ApplicationContext в качестве сервиса в приложение
             builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connStr));
             builder.Services.AddGrpc();
