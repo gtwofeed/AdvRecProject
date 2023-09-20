@@ -18,7 +18,8 @@ namespace GrpcWpfClient.ViewModels
         {
             // создаем канал для обмена сообщениями с сервером
             // параметр - адрес сервера gRPC
-            string connStr = "https://localhost:7144";
+            // string connStr = "https://localhost:7144";
+            string connStr = Properties.Settings.Default.ConnectService;
 
             // создаем канал для обмена сообщениями с сервером
             // параметр - адрес сервера gRPC
